@@ -36,11 +36,11 @@ export default function PostFormDialog(props) {
 
   const handleSubmit = (e) => {
       e.preventDefault();
-      if(rating === '' || comment === '') {
+      if(rating == '' || comment == '') {
           alert('enter all require fields');
           return;
       }
-      const url = 'http://localhost:3000/api/anime/add/review/' + props.anilist_id + "/" + props.userId;
+      const url = 'https://whispering-forest-98624.herokuapp.com/api/anime/add/review/' + props.anilist_id + "/" + props.userId;
         axios.post( url, {
         rating : rating,
         comment : comment,
@@ -48,7 +48,12 @@ export default function PostFormDialog(props) {
         headers: {
           "Content-type": "Application/json",
           "Authorization": `Bearer ${props.token}`
-          }  
+          }  ,
+          changeOrigin: true, 
+    //secure: false,
+    onProxyRes: function (proxyRes, req, res) {
+       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    } 
     })
     .then(res => {
       if(res.status === 201) {
@@ -60,6 +65,7 @@ export default function PostFormDialog(props) {
     })
     .catch(err => {
       console.log(err);
+      alert("error", err);
     })
     setOpen(false);
   }

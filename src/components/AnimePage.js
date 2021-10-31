@@ -59,17 +59,27 @@ export default function AnimePage() {
   useEffect(() => {
 
     if(token) {
-        const url = 'http://localhost:3000/api/anime/byId/' + id + "/" + userId;
+        const url = 'https://whispering-forest-98624.herokuapp.com/api/anime/byId/' + id + "/" + userId;
         axios.get(url, {
             headers: {
                 "Content-type": "Application/json",
                 "Authorization": `Bearer ${token}`
-                }  
+                }  ,
+                changeOrigin: true, 
+    //secure: false,
+    onProxyRes: function (proxyRes, req, res) {
+       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    } 
         })
         .then(res => {
 
             console.log(res);
             if(res.status == 200) {
+                if(res.data.anime_data == undefined) {
+
+                    alert("anime data is not loaded");
+                    return;
+                }
                 setReviews(res.data.anime_data.reviews);
                 let concatenatedGenre = "";
                 res.data.anime_data.genres.forEach(genre => {
@@ -85,6 +95,7 @@ export default function AnimePage() {
             }
         })
         .catch(error => {
+            console.log(error);
             alert("something went wrong");
         });
     } else {

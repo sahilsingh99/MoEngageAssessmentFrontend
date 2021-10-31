@@ -46,7 +46,7 @@ function App() {
   }
 
   const logoutHandler = () => {
-    axios.get('http://localhost:3000/api/auth/logout')
+    axios.get('https://whispering-forest-98624.herokuapp.com/api/auth/logout')
     .then(res => {
       alert("logged Out :)");
       localStorage.removeItem('token');
@@ -65,14 +65,18 @@ function App() {
   useEffect(() => {
     console.log(token, userName, userId);
     if(token) {
-      const url = 'http://localhost:3000/api/anime/' + userId;
+      const url = 'https://whispering-forest-98624.herokuapp.com/api/anime/' + userId;
       axios.get(
         url,
         {
           headers: {
             "Content-type": "Application/json",
             "Authorization": `Bearer ${token}`
-            }  
+            }  ,changeOrigin: true, 
+            //secure: false,
+            onProxyRes: function (proxyRes, req, res) {
+               proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+            } 
         }
       )
       .then(res => {
@@ -95,13 +99,18 @@ function App() {
 
     console.log("here");
     console.log(token);
-    const url = 'http://localhost:3000/api/anime/' + userId;
+    const url = 'https://whispering-forest-98624.herokuapp.com/api/anime/' + userId;
     axios.post(url, {title : titleSearch,
       genre : ""}, {
       headers: {
         "Content-type": "Application/json",
         "Authorization": `Bearer ${token}`
-        }  
+      },
+      changeOrigin: true, 
+    //secure: false,
+    onProxyRes: function (proxyRes, req, res) {
+       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    } 
     })
     .then(res => {
 
@@ -127,13 +136,17 @@ function App() {
   function handleGenreSearch(value) {
 
 
-    const url = 'http://localhost:3000/api/anime/' + userId;
+    const url = 'https://whispering-forest-98624.herokuapp.com/api/anime/' + userId;
     axios.post(url, {title : genreSearch,
       genre : ""}, {
       headers: {
         "Content-type": "Application/json",
         "Authorization": `Bearer ${token}`
-        }  
+        } , changeOrigin: true, 
+        //secure: false,
+        onProxyRes: function (proxyRes, req, res) {
+           proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+        } 
     })
     .then(res => {
 

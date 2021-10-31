@@ -51,8 +51,12 @@ export default function AnimeCard(props) {
 
   function submitHandler() {
 
-    let url = "/anime/" + anime.anilist_id;
-    history.push(url);
+    if(anime.anilist_id != undefined)
+    {let url = "/anime/" + anime.anilist_id;
+    history.push(url);}
+    else {
+      alert("try again");
+    }
   }
 
   return (

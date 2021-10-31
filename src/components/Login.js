@@ -46,7 +46,7 @@ function Login() {
     var handleSubmit = (e) => {
         e.preventDefault();
         console.log('clicked')
-        axios.post('http://localhost:3000/api/auth/login', {
+        axios.post('https://whispering-forest-98624.herokuapp.com/api/auth/login', {
           email : emailRef.current.value,
           password : passRef.current.value
         })
@@ -61,17 +61,8 @@ function Login() {
           }
         })
         .catch(err => {
-            emailRef.current.value = '';
-            passRef.current.value = '';
-            let message = err.response.data.custom_message;
-            let email_message = "";
-            let username_message = "";
-            if(err.response.data.message.errors){
-                email_message = err.response.data.message.errors.email ? "enter valid email" : '';
-                username_message = err.response.data.message.errors.username ? "enter valid username" : '';
-            }
-            message = message + "\n" + email_message + "\n" + username_message;
-            alert(message);
+            
+            alert(err);
             console.log(err.response);
         })
       }
